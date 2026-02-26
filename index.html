@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Knoxified Application & Booking</title>
+
+  <!--
+    GitHub Pages note:
+    Use RELATIVE paths (no leading "/") so icons work both on:
+    - https://username.github.io/
+    - https://username.github.io/repo-name/
+    Place these files in the SAME published folder as this index.html (repo root or /docs, depending on your Pages setting).
+  -->
+
+  <!-- FAVICON / APP ICONS -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+  <!-- Android / PWA -->
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Optional: better iOS install appearance -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root{
+      --knox-blue:#2563eb;
+      --knox-black:#000000;
+      --knox-white:#ffffff;
+    }
+
+    body{
+      background: radial-gradient(circle at 20% 0%, rgba(37,99,235,0.15), transparent 40%), #000;
+      color:white;
+      font-family:sans-serif;
+    }
+
+    .card{
+      background:rgba(10,15,30,0.85);
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter:blur(20px);
+    }
+
+    .input{
+      width:100%;padding:14px;border-radius:10px;
+      background:#020617;border:1px solid #1e293b;color:#fff
+    }
+
+    .input::placeholder{color:#64748b}
+    .label{font-size:13px;color:#94a3b8;margin-bottom:6px;display:block}
+
+    .btn{
+      background:var(--knox-blue);
+      padding:14px;border-radius:12px;font-weight:bold;width:100%;transition:.3s
+    }
+    .btn:hover{opacity:.9}
+
+    .hidden{display:none}
+  </style>
+</head>
+
+<body class="p-6">
+
+  <!-- HERO SECTION -->
+  <section class="text-center mb-16">
+    <p class="text-blue-400 uppercase tracking-widest mb-4 text-sm">Private System Access</p>
+    <h1 class="text-5xl font-bold mb-6">You’ve Seen The System.<br>Now Qualify For Deployment.</h1>
+    <p class="text-slate-400 max-w-2xl mx-auto mb-10">
+      We only activate Knoxified infrastructure for a small number of companies each month to ensure precision deployment and measurable results.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div class="card p-6 rounded-2xl">
+        <h3 class="text-3xl font-bold text-blue-400">97%</h3>
+        <p class="text-slate-400 text-sm mt-2">Automation Accuracy</p>
+      </div>
+      <div class="card p-6 rounded-2xl">
+        <h3 class="text-3xl font-bold text-blue-400">7 Days</h3>
+        <p class="text-slate-400 text-sm mt-2">Avg Deployment</p>
+      </div>
+      <div class="card p-6 rounded-2xl">
+        <h3 class="text-3xl font-bold text-blue-400">28%</h3>
+        <p class="text-slate-400 text-sm mt-2">Revenue Lift</p>
+      </div>
+    </div>
+
+    <div class="mt-10 text-sm text-slate-500">
+      We onboard only <span class="text-blue-400 font-semibold">3 companies per niche/month</span>
+    </div>
+  </section>
+
+  <div class="max-w-3xl mx-auto">
+
+    <!-- STEP 1 -->
+    <div id="step1" class="card p-6 rounded-2xl mb-6">
+      <h2 class="text-xl font-semibold mb-4">Strategic Qualification</h2>
+
+      <label class="label">Biggest Challenge Right Now</label>
+      <textarea class="input mb-4" id="q1" required placeholder="What really made you click?"></textarea>
+
+      <label class="label">What Have You Tried To Fix This?</label>
+      <textarea class="input mb-4" id="q2" required placeholder="Agencies, hires, software..."></textarea>
+
+      <label class="label">If We Don't Have Space, What's Your Plan B?</label>
+      <textarea class="input mb-4" id="q3" required placeholder="How would you handle the bottleneck?"></textarea>
+
+      <label class="label">How Does This Impact You When Solved In 30 Days?</label>
+      <textarea class="input mb-4" id="q4" required placeholder="Revenue, promotion, growth"></textarea>
+
+      <button class="btn" onclick="nextStep()">Continue Application →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" class="card p-6 rounded-2xl hidden">
+      <h2 class="text-xl font-semibold mb-4">Full Application</h2>
+      <form id="appForm">
+        <div id="appError" class="hidden mb-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm px-4 py-3"></div>
+
+        <input class="input mb-4" name="name" required placeholder="Full Name (Decision Maker)" />
+        <input class="input mb-4" name="industry" required placeholder="Industry / Field (Roofing, Real Estate, Logistics...)" />
+        <input class="input mb-4" name="email" required placeholder="Work Email (name@company.com)" />
+        <input class="input mb-4" name="company" required placeholder="Company Name" />
+
+        <label class="label">Which system tier best fits your needs?</label>
+        <select class="input mb-4" name="tier" required>
+          <option value="" selected disabled>Custom tiers (select one) (placeholder)</option>
+          <option value="core_automation">Core Automation (up to $4k)</option>
+          <option value="entry_systems">Entry Systems ($5k-$6k)</option>
+          <option value="growth_systems">Growth Systems ($6k-$7.5k / month)</option>
+          <option value="executive_systems">Executive Systems ($7.5k-$8.5k / month)</option>
+          <option value="custom_enterprise">Custom / Enterprise ($12k+)</option>
+          <option value="not_sure_yet">Not sure yet</option>
+        </select>
+
+        <label class="label">Are you ready to move forward if this system is a fit?</label>
+        <div class="mb-4 text-sm">
+          <label><input type="radio" name="ready" value="yes" required> Yes</label>
+          <label class="ml-4"><input type="radio" name="ready" value="researching"> Just researching</label>
+        </div>
+
+        <label class="flex items-center gap-2 mb-4 text-sm">
+          <input type="checkbox" required />
+          I understand only a limited number of companies are accepted
+        </label>
+
+        <button id="submitBtn" type="submit" class="btn">Submit Application →</button>
+        <p id="submitStatus" class="hidden mt-3 text-sm text-slate-400">Submitting application...</p>
+      </form>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step3" class="hidden mt-8 text-center"></div>
+
+  </div>
+
+  <script>
+    // Toggle this depending on niche:
+    // true  = require company email (blocks gmail/yahoo/etc)
+    // false = allow any email (recommended if you expand beyond B2B operators)
+    const BLOCK_FREE_EMAIL = true;
+
+    const appForm = document.getElementById('appForm');
+    const step2 = document.getElementById('step2');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitStatus = document.getElementById('submitStatus');
+    const appError = document.getElementById('appError');
+
+    function nextStep(){
+      if(!q1.value||!q2.value||!q3.value||!q4.value){alert('Complete all fields');return}
+      document.getElementById('step1').classList.add('hidden');
+      step2.classList.remove('hidden');
+    }
+
+    function isWorkEmail(email){
+      const free=['gmail.com','yahoo.com','hotmail.com','outlook.com'];
+      return !free.some(d=>email.toLowerCase().includes(d));
+    }
+
+    function score(d){
+      let s=0;
+      if(d.ready==='yes')s+=30;
+      if(d.tier==='entry_systems')s+=10;
+      if(d.tier==='growth_systems')s+=20;
+      if(d.tier==='executive_systems')s+=30;
+      if(d.tier==='custom_enterprise')s+=40;
+      if(d.tier==='core_automation')s+=5;
+      if(d.q2.length>20)s+=10;
+      if(d.q4.length>20)s+=20;
+      return s;
+    }
+
+    appForm.addEventListener('submit', async e=>{
+      e.preventDefault();
+      appError.classList.add('hidden');
+      appError.textContent='';
+
+      const data={q1:q1.value,q2:q2.value,q3:q3.value,q4:q4.value,...Object.fromEntries(new FormData(appForm))};
+
+      // Email policy
+      if(BLOCK_FREE_EMAIL && !isWorkEmail(data.email) ){
+        appError.textContent='Please use a work email (company domain).';
+        appError.classList.remove('hidden');
+        return;
+      }
+
+      const s=score(data);
+      data.leadScore=s;
+      data.leadCategory = s>=70 ? 'Hot' : s>=40 ? 'Warm' : 'Low';
+
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.7';
+      submitStatus.classList.remove('hidden');
+      submitStatus.textContent = 'Submitting application...';
+
+      try {
+        const res = await fetch('https://hook.eu2.make.com/w190lgsjvwlo6tcq58nnm4812b9rghlk',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(data)
+        });
+
+        if(!res.ok){
+          throw new Error('Webhook request failed');
+        }
+
+        submitStatus.textContent = 'Application submitted successfully. Unlocking booking...';
+
+        step2.classList.add('hidden');
+        const step3=document.getElementById('step3');
+        step3.classList.remove('hidden');
+
+        // No auto-rejection. You decide manually later via CRM.
+        step3.innerHTML=`
+          <div class="card p-6 rounded-2xl">
+            <p class="text-blue-400 text-sm uppercase tracking-widest mb-2">Application Received</p>
+            <h2 class="text-2xl font-bold mb-3">Proceed to Provisional Scheduling</h2>
+            <p class="text-slate-400 mb-6">Your application has been logged for review. You may reserve a provisional deployment call slot while our team reviews internal fit.</p>
+
+            <label class="flex items-start gap-3 text-left text-sm text-slate-300 mb-5 bg-slate-900/40 border border-white/5 rounded-xl p-4">
+              <input id="provisionalConfirm" type="checkbox" class="mt-1" />
+              <span>I understand this booking is provisional. Knoxified will review my application first and send final confirmation after review.</span>
+            </label>
+
+            <a id="bookingLink" href="https://calendar.app.google/NGmx5dAcA6C7px8E9" target="_blank" rel="noopener" class="btn inline-block w-auto px-8 opacity-50 pointer-events-none">Confirm to Proceed to Provisional Booking →</a>
+            <p class="text-sm text-slate-500 mt-4">Priority scheduling is provisional until Knoxified confirms fit.</p>
+          </div>`;
+
+        const provisionalConfirm = document.getElementById('provisionalConfirm');
+        const bookingLink = document.getElementById('bookingLink');
+        provisionalConfirm.addEventListener('change', () => {
+          if (provisionalConfirm.checked) {
+            bookingLink.classList.remove('opacity-50', 'pointer-events-none');
+          } else {
+            bookingLink.classList.add('opacity-50', 'pointer-events-none');
+          }
+        });
+
+      } catch(err){
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitStatus.classList.add('hidden');
+        appError.textContent='Submission failed. Please try again in a moment.';
+        appError.classList.remove('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>
